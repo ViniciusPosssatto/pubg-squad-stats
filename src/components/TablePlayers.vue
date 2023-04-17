@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+// import { mapActions } from 'vuex';
   export default {
     props: {
       players: Array,
@@ -52,26 +53,26 @@ import axios from 'axios'
       // }
     },
     methods: {
-        async getUsersById() {
-          let ths = []
-          for(let i; i < this.players.length; i++){
-            ths.push(this.players[i].atributes.name)
-            let url = `https://api.pubg.com/shards/steam/players/${this.players[i].id}/seasons/lifetime`
-            let auth = {'Content-Type': 'application/json', "Authorization": this.apiKey, "Accept": "application/vnd.api+json"}
-            await axios.get(url, {headers: auth}, {} )
-            .then((response) => {
-              let player = response.data.data;
-              player.name = this.players[i].atributes.name
-              this.setPlayersStats(player)
-              console.log(this.playersStats)
-            })
-            .catch((response) => {
-              console.error("DEU ERROOOO", response)
-            })
-          }
-          console.log(ths)
-          this.th = ths;
-        },
+        // async getUsersById() {
+        //   let ths = []
+        //   for(let i; i < this.players.length; i++){
+        //     ths.push(this.players[i].atributes.name)
+        //     let url = `https://api.pubg.com/shards/steam/players/${this.players[i].id}/seasons/lifetime`
+        //     let auth = {'Content-Type': 'application/json', "Authorization": this.apiKey, "Accept": "application/vnd.api+json"}
+        //     await axios.get(url, {headers: auth}, {} )
+        //     .then((response) => {
+        //       let player = response.data.data;
+        //       player.name = this.players[i].atributes.name
+        //       this.setPlayersStats(player)
+        //       console.log(this.playersStats)
+        //     })
+        //     .catch((response) => {
+        //       console.error("DEU ERROOOO", response)
+        //     })
+        //   }
+        //   console.log(ths)
+        //   this.th = ths;
+        // },
         setPlayersStats(data) {
           let values = this.playersStats;
           values.push(data)

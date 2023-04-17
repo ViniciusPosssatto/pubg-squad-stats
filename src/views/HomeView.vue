@@ -10,7 +10,7 @@
           hide-details="auto"
           :loading="loading"
         ></v-text-field>
-        <v-btn @click="getUserId">
+        <v-btn @click="getUser">
           click
         </v-btn>  
       </div>
@@ -35,8 +35,8 @@
 </template>
 <script>
 import TablePlayer from "../components/TablePlayers.vue"
-import axios from "axios"
-import { mapActions } from "vuex"
+// import axios from "axios"
+import { mapActions, mapGetters, mapState } from "vuex"
 export default {
   components: {
     TablePlayer
@@ -44,7 +44,7 @@ export default {
   data(){
     return {
       layout: null,
-      apiKey: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkODE3YmZmMC1iZGZiLTAxM2ItMWJhNS00ZTllYWE2OTQyZTMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjgxNTkxMjk4LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Ii01NDkxNjQwOS05NGJhLTQ4ZGEtYmI1Mi0wNzQ1YzliYzlkMTkifQ.VK_xmxa15hUFjNLgiA6cabIOAiB6HWlOriWuA35P8ZI",
+      // apiKey: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkODE3YmZmMC1iZGZiLTAxM2ItMWJhNS00ZTllYWE2OTQyZTMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjgxNTkxMjk4LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Ii01NDkxNjQwOS05NGJhLTQ4ZGEtYmI1Mi0wNzQ1YzliYzlkMTkifQ.VK_xmxa15hUFjNLgiA6cabIOAiB6HWlOriWuA35P8ZI",
       rules: [
           value => !!value || "Required.",
           value => (value && value.length >= 3) || "Min 3 characters",
@@ -55,24 +55,35 @@ export default {
       loading: false,
     }
   },
+  computed: {
+    ...mapState({
+      id: (state)  => state.userId,
+      stats: (state)  => state.usersStats
+    }),
+    ...mapGetters(['requests/getUsersId']),
+
+
+  },
   methods: {
-    ...mapActions(['getUserId']),
+    ...mapActions(['requests/getUserId']),
     async getUser() {
-      await this.getUserId()
-      .then(() => {
-        this.$toast.success('Get Users Success.', {
-          type: 'success',
-          position: 'bottom',
-          dismissible: true,
-          duration: 1000
-        })
-      })
-      .catch((response) => {
-        console.error("DEU ERROOOO", response)
-      })
-      .finally(() => {
-        this.loading = false;
-      })
+      await this.$store.dispatch('requests/getUserId', this.userNick)
+      console.log(this.stats)
+      // .then(() => {
+      //   // this.$toast.success('Get Users Success.', {
+      //   //   type: 'success',
+      //   //   position: 'bottom',
+      //   //   dismissible: true,
+      //   //   duration: 1000
+      //   // })
+      //   console.log('thenss')
+      // })
+      // .catch((response) => {
+      //   console.error("DEU ERROOOO", response)
+      // })
+      // .finally(() => {
+      //   this.loading = false;
+      // })
   },
   setPlayers(player) {
     let values = this.players;

@@ -3,18 +3,20 @@ import axios from 'axios'
 const API_KEY = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkODE3YmZmMC1iZGZiLTAxM2ItMWJhNS00ZTllYWE2OTQyZTMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjgxNTkxMjk4LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Ii01NDkxNjQwOS05NGJhLTQ4ZGEtYmI1Mi0wNzQ1YzliYzlkMTkifQ.VK_xmxa15hUFjNLgiA6cabIOAiB6HWlOriWuA35P8ZI"
 const auth = {'Content-Type': 'application/json', "Authorization": API_KEY, "Accept": "application/vnd.api+json"}
 
-const requests = {
+export default {
   namespaced: true,
-  state: () => ({
-    userId: "",
-    usersStats: [],
-  }),
+  state() {
+    return {
+      userId: "",
+      usersStats: [],
+    };
+  },
 
   getters: {
-    getUserId: state => {
+    getUsersId(state) {
       return state.userId;
     },
-    getUsersStats: state => {
+    getUsersStats(state) {
       return state.usersStats;
     }
   },
@@ -28,12 +30,12 @@ const requests = {
 
   actions: {
     async getUserId({commit}, userNick) {
+      console.log("user");
       let url = `https://api.pubg.com/shards/steam/players?filter[playerNames]=${userNick}`
-      await axios.get(url, {headers: auth}, {} )
+      await axios.get(url, {headers: auth}, {})
       .then((response) => {
         let user =  response.data.data
-        commit('getUsersStatsLifetimeById', user)
-        console.log(user)
+        commit('requests/getUsersStatsLifetimeById', user)
       })
       .catch((response) => {
         console.error("ERRO no getUserId: ", response)
@@ -45,8 +47,8 @@ const requests = {
       .then((response) => {
         let player = response.data.data;
         player[0].attributes = user.attributes
-        commit('setUsersList', player)
         console.log(player)
+        commit('setUsersList', player)
       })
       .catch((response) => {
         console.error("ERRO no getUsersStatsLifetimeById: ", response)
@@ -54,5 +56,3 @@ const requests = {
     }
   }
 }
-  
-export default { requests }

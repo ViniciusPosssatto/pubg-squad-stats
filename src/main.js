@@ -8,7 +8,8 @@ import './assets/main.css'
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
-import Vuex from 'vuex'
+// import Vuex from 'vuex'
+import store from './stores'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import ToastPlugin from 'vue-toast-notification';
@@ -22,7 +23,8 @@ const vuetify = createVuetify({
 const app = createApp(App)
 
 app.use(ToastPlugin)
-app.use(Vuex)
+// app.use(Vuex)
+app.use(store)
 app.use(router)
 
 app.use(vuetify).mount('#app')

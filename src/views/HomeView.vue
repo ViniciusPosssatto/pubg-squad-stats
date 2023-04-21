@@ -28,7 +28,8 @@
       ></v-img>
       </div>
     </v-navigation-drawer> -->
-    <v-main>   
+    <v-main>
+      <p v-text="getUsersList"></p>   
         <TablePlayer :players="players"/>
     </v-main>
   </v-layout>
@@ -60,7 +61,11 @@ export default {
       id: (state)  => state.userId,
       stats: (state)  => state.usersStats
     }),
-    ...mapGetters(['requests/getUsersId']),
+    ...mapGetters(['requests/getUsersStats']),
+
+    getUsersList(){
+      return this["requests/getUsersStats"]
+    }
 
 
   },
@@ -68,22 +73,21 @@ export default {
     ...mapActions(['requests/getUserId']),
     async getUser() {
       await this.$store.dispatch('requests/getUserId', this.userNick)
-      console.log(this.stats)
-      // .then(() => {
-      //   // this.$toast.success('Get Users Success.', {
-      //   //   type: 'success',
-      //   //   position: 'bottom',
-      //   //   dismissible: true,
-      //   //   duration: 1000
-      //   // })
-      //   console.log('thenss')
-      // })
-      // .catch((response) => {
-      //   console.error("DEU ERROOOO", response)
-      // })
-      // .finally(() => {
-      //   this.loading = false;
-      // })
+      .then(() => {
+        this.$toast.success('Get Users Success.', {
+          type: 'success',
+          position: 'bottom',
+          dismissible: true,
+          duration: 1000
+        })
+        console.log('thenss')
+      })
+      .catch((response) => {
+        console.error("DEU ERROOOO", response)
+      })
+      .finally(() => {
+        this.loading = false;
+      })
   },
   setPlayers(player) {
     let values = this.players;

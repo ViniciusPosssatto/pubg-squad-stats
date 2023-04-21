@@ -29,26 +29,26 @@ export default {
   },
 
   actions: {
-    async getUserId({commit}, userNick) {
+    async getUserId(context, userNick) {
       console.log("user");
       let url = `https://api.pubg.com/shards/steam/players?filter[playerNames]=${userNick}`
       await axios.get(url, {headers: auth}, {})
       .then((response) => {
         let user =  response.data.data
-        commit('requests/getUsersStatsLifetimeById', user)
+        context.dispatch('getUsersStatsLifetimeById', user)
       })
       .catch((response) => {
         console.error("ERRO no getUserId: ", response)
+        return false
       })
     },
-    async getUsersStatsLifetimeById({commit}, user) {
+    async getUsersStatsLifetimeById(context, user) {
       let url = `https://api.pubg.com/shards/steam/players/${user[0].id}/seasons/lifetime`
       await axios.get(url, {headers: auth}, {} )
       .then((response) => {
         let player = response.data.data;
-        player[0].attributes = user.attributes
-        console.log(player)
-        commit('setUsersList', player)
+        player.player = user[0].attributes
+        context.commit('setUsersList', player)
       })
       .catch((response) => {
         console.error("ERRO no getUsersStatsLifetimeById: ", response)

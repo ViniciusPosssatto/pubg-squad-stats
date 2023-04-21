@@ -1,36 +1,24 @@
 <template>
   <v-layout ref="app">
-    <v-app-bar color="grey-lighten-2" name="app-bar" class="justify-center">
+    <v-app-bar extension-height="500" color="grey-lighten-2" name="app-bar" class="justify-center">
       <div class="d-flex justify-center align-center w-100">
         <v-text-field
+          :disabled="getUsersList.length >= 6"
           v-model="userNick"
           label="Digite um nick"
           :rules="rules"
           validate-on="submit"
           hide-details="auto"
           :loading="loading"
+          :disable="getUsersList.length === 6"
         ></v-text-field>
-        <v-btn @click="getUser">
+        <v-btn  @click="getUser" :disabled="getUsersList.length >= 6">
           click
         </v-btn>  
       </div>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <!-- <RouterLink to="/about">About</RouterLink> -->
-      </nav>
     </v-app-bar>
-    <!-- <v-navigation-drawer color="grey-darken-2" permanent name="drawer">
-      <div class="d-flex justify-center align-center">
-        <v-img
-        aspect-ratio="16/9"
-        cover
-        src="https://wstatic-prod.pubg.com/web/live/static/og/img-og-pubg.jpg"
-      ></v-img>
-      </div>
-    </v-navigation-drawer> -->
     <v-main>
-      <p v-text="getUsersList"></p>   
-        <TablePlayer :players="players"/>
+        <TablePlayer />
     </v-main>
   </v-layout>
 </template>

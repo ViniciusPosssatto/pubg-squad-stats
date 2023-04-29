@@ -67,6 +67,7 @@ export default {
       const auth = {'Content-Type': 'application/json', "Authorization": this.API_KEY, "Accept": "application/vnd.api+json"}
       await axios.get(url, {headers: auth}, {})
       .then((response) => {
+        this.userNick = ''
         let user =  response.data.data
         this.$store.dispatch('requests/getUsersStatsLifetimeById', user)
         this.$toast.success('Player encontrado! Pegando os dados.', {

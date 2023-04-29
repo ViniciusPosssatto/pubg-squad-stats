@@ -64,7 +64,7 @@ import { mapMutations } from 'vuex';
               "revives","rideDistance","roadKills","roundMostKills", "roundsPlayed","suicides",
               "swimDistance","teamKills","timeSurvived","top10s","vehicleDestroys","walkDistance",
                "weaponsAcquired","weeklyKills","weeklyWins","winPoints","wins"],
-        th: { assists: "Assistências", boosts: "Biricos usados", dBNOs: "Inimidos derrubados", 
+        th: { assists: "Assistências", boosts: "Biricos usados", dBNOs: "Inimigos derrubados", 
           dailyKills: "Kills do último dia",  dailyWins: "Wins do último dia", damageDealt: "Total de dano", 
           days: "Dias jogados", headshotKills: "Mortes de HS", heals: "Itens de cura usados",  killPoints: "Pontos de kills**",
           kills: "Mortes feitas", longestKill: "Morte mais longa (m)", longestTimeSurvived: "Maior tempo sobrevivido (seg)",

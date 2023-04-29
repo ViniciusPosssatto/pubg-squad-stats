@@ -93,11 +93,8 @@ import { mapGetters } from 'vuex';
         
         return tranlateStats[stats]
       },
-
-      
-
-
-
+    },
+    methods: {
       playerStatsByGameMode(gameMode) {
         if (gameMode === "solo") {
           return this.getUsersList.map((player) => {
@@ -131,56 +128,9 @@ import { mapGetters } from 'vuex';
         }
         return ''
       }
-      // thList() {
-      //   return this.playersStats.player
-        
-      // },
-      // trList() {
-      //   return this.playersStats.atributes.gameModeStats.squad
-
-      // }
     },
-    methods: {
-      
 
-
-        // for (let i=0;i < thiss.playersNames.length; i++) {
-
-        // }
-      // },
-        // async getUsersById() {
-        //   let ths = []
-        //   for(let i; i < this.players.length; i++){
-        //     ths.push(this.players[i].atributes.name)
-        //     let url = `https://api.pubg.com/shards/steam/players/${this.players[i].id}/seasons/lifetime`
-        //     let auth = {'Content-Type': 'application/json', "Authorization": this.apiKey, "Accept": "application/vnd.api+json"}
-        //     await axios.get(url, {headers: auth}, {} )
-        //     .then((response) => {
-        //       let player = response.data.data;
-        //       player.name = this.players[i].atributes.name
-        //       this.setPlayersStats(player)
-        //       console.log(this.playersStats)
-        //     })
-        //     .catch((response) => {
-        //       console.error("DEU ERROOOO", response)
-        //     })
-        //   }
-        //   console.log(ths)
-        //   this.th = ths;
-        // },
-        setPlayersStats(data) {
-          let values = this.playersStats;
-          values.push(data)
-          this.playersStats = values
-        }
-      },
-
-    watch: {
-      players() {
-        console.log('teste@')
-        return this.getUsersById()
-      }
-    }
+    watch: {}
       
     }
 </script>

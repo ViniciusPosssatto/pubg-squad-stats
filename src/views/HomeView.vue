@@ -12,9 +12,9 @@
           :loading="loading"
           :disable="getUsersList.length === 6"
         ></v-text-field>
-        <v-btn  @click="getUser" :disabled="getUsersList.length >= 6">
-          click
-        </v-btn>  
+        <v-btn  @click="getUser" :disabled="loading || getUsersList.length >= 6" >
+          Buscar player
+        </v-btn>
       </div>
     </v-app-bar>
     <v-main>
@@ -37,7 +37,7 @@ export default {
           value => !!value || "Required.",
           value => (value && value.length >= 3) || "Min 3 characters",
       ],
-      userNick: "MyEgGs_Vineh",
+      userNick: "",
       loading: false,
       API_KEY: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkODE3YmZmMC1iZGZiLTAxM2ItMWJhNS00ZTllYWE2OTQyZTMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjgxNTkxMjk4LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Ii01NDkxNjQwOS05NGJhLTQ4ZGEtYmI1Mi0wNzQ1YzliYzlkMTkifQ.VK_xmxa15hUFjNLgiA6cabIOAiB6HWlOriWuA35P8ZI",
     }
@@ -62,6 +62,7 @@ export default {
   methods: {
     ...mapActions(['requests/getUserId']),
     async getUser() {
+      this.loading = true;
       let url = `https://api.pubg.com/shards/steam/players?filter[playerNames]=${this.userNick}`
       const auth = {'Content-Type': 'application/json', "Authorization": this.API_KEY, "Accept": "application/vnd.api+json"}
       await axios.get(url, {headers: auth}, {})

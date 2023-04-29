@@ -33,3 +33,10 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## FIREBASE HOSTING
+
+O deploy acontece diretamente no projeto do firebase configurado no arquivo firebaserc com o comando:
+```sh
+firebase deploy
+```

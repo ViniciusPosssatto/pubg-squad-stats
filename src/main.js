@@ -1,14 +1,38 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
 
 import './assets/main.css'
 
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+// import Vuex from 'vuex'
+import store from './stores'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import ToastPlugin from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
+
+const vuetify = createVuetify({
+  components,
+  directives,
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    }
+  },
+})
+
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(ToastPlugin)
+// app.use(Vuex)
+app.use(store)
 app.use(router)
 
-app.mount('#app')
+app.use(vuetify).mount('#app')

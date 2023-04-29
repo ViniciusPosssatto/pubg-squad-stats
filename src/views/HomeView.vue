@@ -18,13 +18,13 @@
       </div>
     </v-app-bar>
     <v-main>
-        <TablePlayer />
+        <TablePlayer :getUsersList="getUsersList"/>
     </v-main>
   </v-layout>
 </template>
 <script>
 import TablePlayer from "../components/TablePlayers.vue"
-// import axios from "axios"
+import axios from "axios"
 import { mapActions, mapGetters, mapState } from "vuex"
 export default {
   components: {
@@ -33,15 +33,13 @@ export default {
   data(){
     return {
       layout: null,
-      // apiKey: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkODE3YmZmMC1iZGZiLTAxM2ItMWJhNS00ZTllYWE2OTQyZTMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjgxNTkxMjk4LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Ii01NDkxNjQwOS05NGJhLTQ4ZGEtYmI1Mi0wNzQ1YzliYzlkMTkifQ.VK_xmxa15hUFjNLgiA6cabIOAiB6HWlOriWuA35P8ZI",
       rules: [
           value => !!value || "Required.",
           value => (value && value.length >= 3) || "Min 3 characters",
       ],
       userNick: "MyEgGs_Vineh",
-      idUser:'',
-      players: [],
       loading: false,
+      API_KEY: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkODE3YmZmMC1iZGZiLTAxM2ItMWJhNS00ZTllYWE2OTQyZTMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNjgxNTkxMjk4LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6Ii01NDkxNjQwOS05NGJhLTQ4ZGEtYmI1Mi0wNzQ1YzliYzlkMTkifQ.VK_xmxa15hUFjNLgiA6cabIOAiB6HWlOriWuA35P8ZI",
     }
   },
   computed: {
@@ -52,7 +50,11 @@ export default {
     ...mapGetters(['requests/getUsersStats']),
 
     getUsersList(){
-      return this["requests/getUsersStats"]
+      if (this["requests/getUsersStats"]) {
+        return this["requests/getUsersStats"]
+      } else {
+        return []
+      }
     }
 
 
@@ -60,31 +62,42 @@ export default {
   methods: {
     ...mapActions(['requests/getUserId']),
     async getUser() {
-      await this.$store.dispatch('requests/getUserId', this.userNick)
-      .then(() => {
-        this.$toast.success('Get Users Success.', {
+      let url = `https://api.pubg.com/shards/steam/players?filter[playerNames]=${this.userNick}`
+      const auth = {'Content-Type': 'application/json', "Authorization": this.API_KEY, "Accept": "application/vnd.api+json"}
+      await axios.get(url, {headers: auth}, {})
+      .then((response) => {
+        let user =  response.data.data
+        this.$store.dispatch('requests/getUsersStatsLifetimeById', user)
+        this.$toast.success('Player encontrado! Pegando os dados.', {
           type: 'success',
           position: 'bottom',
           dismissible: true,
-          duration: 1000
+          duration: 2000
         })
-        console.log('thenss')
       })
       .catch((response) => {
-        console.error("DEU ERROOOO", response)
+        console.error("ERRO no getUser: ", response)
+        this.$toast.error('Nick não encontrado, verifique tente novamente!', {
+          type: 'error',
+          position: 'bottom',
+          dismissible: true,
+          duration: 2000
+        })
       })
       .finally(() => {
         this.loading = false;
       })
+    },
+    setPlayers(player) {
+      let values = this.players;
+      values.push(player)
+      this.players = values
+      console.log(this.players)
+    }
+
   },
-  setPlayers(player) {
-    let values = this.players;
-    values.push(player)
-    this.players = values
-    console.log(this.players)
-  }
       
-  },
+  
 }
 </script>
 <style scoped>

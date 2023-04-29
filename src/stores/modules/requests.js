@@ -24,24 +24,15 @@ export default {
   mutations: {
     setUsersList(state, userStats) {
       state.usersStats.push(userStats)
+    },
+    removePlayerFromList(state, name) {
+      console.log(name)
+      state.usersStats = state.usersStats.filter(player => player.player.name !== name)    
     }
 
   },
 
   actions: {
-    async getUserId(context, userNick) {
-      console.log("user");
-      let url = `https://api.pubg.com/shards/steam/players?filter[playerNames]=${userNick}`
-      await axios.get(url, {headers: auth}, {})
-      .then((response) => {
-        let user =  response.data.data
-        context.dispatch('getUsersStatsLifetimeById', user)
-      })
-      .catch((response) => {
-        console.error("ERRO no getUserId: ", response)
-        return false
-      })
-    },
     async getUsersStatsLifetimeById(context, user) {
       let url = `https://api.pubg.com/shards/steam/players/${user[0].id}/seasons/lifetime`
       await axios.get(url, {headers: auth}, {} )

@@ -8,6 +8,7 @@ import './assets/main.css'
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 // import Vuex from 'vuex'
 import store from './stores'
 import * as components from 'vuetify/components'
@@ -18,6 +19,13 @@ import 'vue-toast-notification/dist/theme-bootstrap.css';
 const vuetify = createVuetify({
   components,
   directives,
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    }
+  },
 })
 
 const app = createApp(App)
